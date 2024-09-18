@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+@inject UserAuthenticationStateProvider AuthState
+@inject IJSRuntime JSRuntime
+
+<div class="page">
+
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">           
+            <AuthorizeView>
+                <NotAuthorized>
+                    <GoogleLoginButton />
+                </NotAuthorized>
+                <Authorized>
+                    <NavLink class="nav-link" href="signout" style="color:black">
+                        <span class="bi bi-box-arrow-in-right-nested-nav-menu" aria-hidden="true"></span> Sign out
+                    </NavLink>
+                    <div class="profile-container" style="display:flex;align-items:center;padding-left:12px;">
+                        <img src="@AuthState.CurrentUser.ProfilePicture" style="border-radius:50%;height:30px;" />
+                        <span style="padding-left:15px;">@AuthState.CurrentUser.Username</span>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

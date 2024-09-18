@@ -1,0 +1,57 @@
+﻿@page "/"
+@attribute [AllowAnonymous]
+@inject UserAuthenticationStateProvider AuthState
+
+<div class="card">
+    <div class="card-body">
+
+        <h5 class="card-title text-center">
+            Welcome to the Blazor WebAssembly OAuth demo,
+            <AuthorizeView>
+                <Authorized>
+                    <b>@(AuthState.CurrentUser.Username)!</b>
+                </Authorized>
+                <NotAuthorized>
+                    <b>anonymous user!</b>
+                </NotAuthorized>
+            </AuthorizeView>
+        </h5>
+        <br />
+        <br />
+        <p class="card-text">
+            Welcome to this <b>Blazor WebAssembly</b> app, where we gracefully juggle two identities—one from an
+            external provider and one from our own database—while keeping things nice and secure 
+            (and keeping passwords far, far away from our hands).
+            <br />
+            <br />
+            Once you sign in through the third-party identity provider (like Google), 
+            we create a shiny new user account for you utilizing our <b>ASP.NET Core Web API</b> backend, 
+            essentially linking your Google identity to your application user account. 
+            <br />
+            This clever setup lets us remember you, like how many times you've signed in, 
+            without us needing to handle sensitive information, like those pesky passwords. 
+            <br />
+            Instead, we store just the essentials: 
+            your unique <b>Google ID</b>, <b>name</b>, <b>email</b>, and your <b>profile picture</b> 
+            <i>(given that you consent to all of this on Google's login page, of course)</i>.
+            <br />
+            <br />
+            The rest? That's Google’s problem.
+            <br />
+            <br />
+            Go ahead and check out the source code over on <a href="https://github.com/TDMR87/BlazorOAuth">GitHub - BlazorOAuth</a>.
+            <br />
+            You can even take this app for a spin by signing in and see how it works.
+            <br />
+            There is an option to <b>delete</b> the user account on the <a href="profile">user profile</a> page.
+        </p>
+    </div>
+    <div class="card-footer text-muted text-center">
+        <AuthorizeView>
+            <Authorized>
+                This is the @AuthState.CurrentUser.GetSignInCountOrdinal() time you've signed in. Nice!
+                <span><img src="img/trophy.png" /></span>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>

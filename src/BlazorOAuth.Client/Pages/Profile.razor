@@ -1,0 +1,75 @@
+﻿@page "/profile"
+@attribute [AllowAnonymous]
+@inject IHttpClientFactory HttpClientFactory
+@inject UserAuthenticationStateProvider AuthState
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <div style="display:flex;flex-direction:column;">
+            <label>
+                <b>Profile picture:</b>
+                <img src="@AuthState.CurrentUser.ProfilePicture" style="border-radius:50%;height:50px;" />
+            </label>
+            <label>
+                <b>Username:</b>
+                <p>@AuthState.CurrentUser.Username</p>
+            </label>
+            <label>
+                <b>Times signed in app:</b>
+                <p>@(AuthState.CurrentUser.SignInCount) times</p>
+            </label>
+            <label>
+                <b>Email:</b>
+                <p>@AuthState.CurrentUser.Email</p>
+            </label>
+        </div>
+        <br />
+        <br />
+        <button @onclick="RemoveAccount" class="btn btn-danger">Delete account</button>
+    </Authorized>
+    <NotAuthorized>
+        <div style="display:flex;flex-direction:column;max-width:600px;">
+
+            <p><i>Sign in to view your account information.</i></p>
+            <br />
+            <label class="col-sm-4 col-form-label">
+                <b>Profile picture:</b>
+                <div class="placeholder rounded-circle" style="width: 50px; height: 50px;"></div>
+            </label>
+            <label class="col-sm-4 col-form-label">
+                <b>Username:</b>
+                <p class="form-control-plaintext">
+                    <span class="placeholder col-8"></span>
+                </p>
+            </label>
+            <label class="col-sm-4 col-form-label">
+                <b>Times signed in app:</b>
+                <p class="form-control-plaintext">
+                    <span class="placeholder col-8"></span>
+                </p>
+            </label>
+            <label class="col-sm-4 col-form-label">
+                <b>Email:</b>
+                <p class="form-control-plaintext">
+                    <span class="placeholder col-8"></span>
+                </p>
+            </label>           
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code 
+{
+    private async Task RemoveAccount()
+    {
+        using var client = HttpClientFactory.CreateClient();
+        var request = new HttpRequestMessage(HttpMethod.Delete, "api/user");
+
+        var response = await client.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("signout");
+        }
+    }
+}

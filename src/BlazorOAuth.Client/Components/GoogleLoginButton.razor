@@ -1,0 +1,41 @@
+﻿@inject IdentityProviderService IdentityProvider
+
+<button @onclick="IdentityProvider.AuthenticateWithGoogle" style="border: none;background: none;">
+    <div class="google-signin-button">
+        <img alt="Google Logo" class="google-logo" src="img/google_logo.png" style="border-radius:50%;">
+        <span class="signin-text">Sign in with Google</span>
+    </div>
+</button>
+
+<style>
+    .google-signin-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: fit-content;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .google-signin-button:hover {
+            background-color: #f5f5f5;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .google-logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    .signin-text {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        color: #757575;
+    }
+</style>

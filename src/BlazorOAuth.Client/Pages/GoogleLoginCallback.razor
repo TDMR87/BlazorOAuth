@@ -1,0 +1,54 @@
+﻿@* This is a callback page where Google redirects the user after successful authentication *@
+
+@page "/google-login-callback"
+@attribute [AllowAnonymous]
+
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+@inject BrowserStorageService BrowserStorage
+@inject TokenService TokenService
+@inject UserAuthenticationStateProvider AuthState
+
+@using Microsoft.AspNetCore.Authorization
+
+<p Text="Hang on, we're signing you in.."></p>
+
+@code 
+ {
+    // The authorization code sent by Google after successful authentication
+    [SupplyParameterFromQuery(Name = "code")]
+    public string? AuthorizationCode { get; set; }
+
+    // Optional state included in the redirect URI
+    [SupplyParameterFromQuery(Name = "state")]
+    public string? State { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(AuthorizationCode))
+        {
+            using var client = HttpClientFactory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/auth/signin/google");
+            request.Headers.Authorization = new("Bearer", AuthorizationCode);
+
+            try
+            {
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var accessToken = await response.Content.ReadAsStringAsync();
+                    await BrowserStorage.SaveAccessToken(accessToken);
+                    await AuthState.NotifyUserLoggedin();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        // Return the user back to the page they were on (defaults to the main page)
+        Navigation.NavigateTo(State ?? "", replace: true);
+    }
+}
