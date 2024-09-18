@@ -1,7 +1,5 @@
 # Blazor WebAssembly with Google Login and Individual User Accounts
 
-### Authentication. The bane of our existence.
-
 This project showcases how to implement external identity provider OAuth authentication and integrate it with application-specific individual user accounts in a Blazor WebAssembly application. The project is designed to serve as a practical reference, a starting point and a playground for developers looking to implement authentication to their client-side apps. The solution presented here frees you from managing the sensitive information, like users passwords, in your systems but still maintaining application-specific user accounts on your server, so that users can customize their own experience in your app. 
 
 ### Developing locally
@@ -14,6 +12,7 @@ Don't forget to specify the Blazor WebAssembly app's authentication callback URI
 Then put the generated ```clientId``` and ```clientSecret``` into the user secrets inside the ```BlazorOAuth.API ``` project.
 
 >"Authentication:GoogleOptions:ClientId": "client-id-here"
+
 >"Authentication:GoogleOptions:ClientSecret": "client-secret-here"
 
 Start both ```BlazorOAuth.API``` and ```BlazorOAuth.Client ``` projects in their respective folders.
