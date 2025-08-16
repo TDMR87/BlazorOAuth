@@ -2,25 +2,26 @@
 
 This project showcases how to implement external identity provider OAuth authentication and integrate it with application-specific individual user accounts in a Blazor WebAssembly application. The project is designed to serve as a practical reference, a starting point and a playground for developers looking to implement authentication to their client-side apps without having to manage sensitive information, like passwords, but still maintaining application-specific user accounts on your server, so that users can customize their own experience in the app. 
 
-Try the live demo at [blazoroauth.azurewebsites.net](https://blazoroauth.azurewebsites.net/)
-
 ### Developing locally
 
-In order to develop locally and integrate with Google's authentication, you'll need to create your Credentials in the [Google Cloud Console](https://console.cloud.google.com/)'s APIs & Services. [See here](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred)
+1. You need to create Google Credentials in the [Google Cloud Console](https://console.cloud.google.com/)'s APIs & Services. [See here](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred). Be sure to specify the Blazor WebAssembly app's authentication callback URI in the ```Authorized Redirect URIs``` section:
+```
+https://localhost:5001/google-login-callback
+```
 
-Be sure to specify the Blazor WebAssembly app's authentication callback URI in the ```Authorized Redirect URIs``` section:
-> https://localhost:5001/google-login-callback 
+2. Put the ```clientId``` and ```clientSecret``` you get from Google into the user secrets inside the BlazorOAuth.API project.
 
-Then put the ```clientId``` and ```clientSecret``` you get from Google into the user secrets inside the ```BlazorOAuth.API ``` project.
+```
+"Authentication:GoogleOptions:ClientId": "client-id-here"
+"Authentication:GoogleOptions:ClientSecret": "client-secret-here"
+```
 
->"Authentication:GoogleOptions:ClientId": "client-id-here"
+3. Run the powershell script ```Init.ps1``` which will setup a local Docker container for SQL Server database.  
 
->"Authentication:GoogleOptions:ClientSecret": "client-secret-here"
-
-**Note:** Included in the project is a powershell script ```Init.ps1``` that will setup a local Docker container SQL Server database for you, all ready to go (you need to have Docker desktop installed).  
-
-Then start both ```BlazorOAuth.API``` and ```BlazorOAuth.Client ``` projects in their respective folders. The API will run EF Core migrations against the local database at startup.
-> dotnet run
+4. Start BlazorOAuth.API and BlazorOAuth.Client projects. The API project will run EF Core migrations against the local database at startup.
+```
+dotnet run
+```
 
 ### Architectural overview
 
